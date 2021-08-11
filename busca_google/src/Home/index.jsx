@@ -10,13 +10,14 @@ import logo from '../assets/logo1.png';
 
 import restaurante from '../assets/bb.png';
 
-import { Card } from '../assets/components';
+import { Card, RestauranteCard, Modal} from '../assets/components';
 
 import { Container, Carousel, Search, Logo, Wrapper, Map, CarouselTitle } from './styles';
 
 
 const Home = () => {
-    const [inputValue, setInputValue] = useState('');    
+    const [inputValue, setInputValue] = useState('');
+    const [modalOpened, setModalOpened] = useState(true);  
 
     const settings = {
         dots: false,
@@ -47,8 +48,10 @@ return (
             <Card photo = {restaurante} title="restaurante 1"/>
         </Carousel>
     </Search>
+    <RestauranteCard />
 </Container>
 <Map/>
+<Modal open={modalOpened} onClose={() => setModalOpened(!modalOpened)} />
 </Wrapper>
 );
 }
