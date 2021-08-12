@@ -9,7 +9,6 @@ const Modal = ({children, open, onClose}) => {
         function onEsc(e){
             if (e.keyCode === 27) onClose();
         }
-
         window.addEventListener('keydown', onEsc);
 
         return () => {
