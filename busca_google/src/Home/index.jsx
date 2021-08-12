@@ -1,4 +1,7 @@
 import React, { useState} from 'react';
+
+import { useSelector } from 'react-redux';
+
 import Slider from "react-slick";
 
 
@@ -10,14 +13,18 @@ import logo from '../assets/logo1.png';
 
 import restaurante from '../assets/bb.png';
 
-import { Card, RestauranteCard, Modal} from '../assets/components';
+import { Card, RestauranteCard, Modal, Map} from '../assets/components';
 
-import { Container, Carousel, Search, Logo, Wrapper, Map, CarouselTitle } from './styles';
+import { Container, Carousel, Search, Logo, Wrapper, CarouselTitle } from './styles';
+import { Restaurant } from '../assets/components/RestauranteCard/styles';
 
 
 const Home = () => {
     const [inputValue, setInputValue] = useState('');
+    const [query, setQuery] = useState(null);
     const [modalOpened, setModalOpened] = useState(true);  
+    const {restaurants} = useSelector((state) => state.restaurants);
+
 
     const settings = {
         dots: false,
@@ -28,6 +35,12 @@ const Home = () => {
         adaptiveHeight: true,
       };
 
+      function handleKeyPress(e){
+          if (e.key === 'Enter'){
+              setQuery(inputValue);
+          }
+      }
+
 return (
        <Wrapper>
            <Container>
@@ -37,7 +50,8 @@ return (
           label='pesquisar'
           outlined
          trailingIcon={<MaterialIcon role="button" icon="search"/>}>
-        <Input value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+        <Input value={inputValue} onkeyPress={handleKeyPress}
+         onChange={(e) => setInputValue(e.target.value)} />
         </TextField>
         <CarouselTitle>Na sua Área</CarouselTitle>
         <Carousel {...settings}>            
@@ -48,10 +62,12 @@ return (
             <Card photo = {restaurante} title="restaurante 1"/>
         </Carousel>
     </Search>
-    <RestauranteCard />
+    {restaurants.map((restaurant) => (
+    <RestauranteCard restaurant={restaurant} />
+))}
 </Container>
-<Map/>
-<Modal open={modalOpened} onClose={() => setModalOpened(!modalOpened)} />
+<Map query={query}/>
+{/*<Modal open={modalOpened} onClose={() => setModalOpened(!modalOpened)} />*/}
 </Wrapper>
 );
 }
